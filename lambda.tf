@@ -5,12 +5,12 @@ data "archive_file" "lambda_code" {
 }
 
 resource "aws_lambda_permission" "resource_based_policies" {
-  for_each      = toset(var.resource_based_policies)
+  count         = length(var.resource_based_policies)
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.lambda_function.function_name
-  statement_id  = each.value.statement_id
-  principal     = each.value.principal
-  source_arn    = each.value.source_arn
+  statement_id  = var.resource_based_policies[count.index].statement_id
+  principal     = var.resource_based_policies[count.index].principal
+  source_arn    = var.resource_based_policies[count.index].source_arn
 }
 
 resource "aws_iam_role" "lambda_exec_role" {
