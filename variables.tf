@@ -11,6 +11,7 @@ variable "function_name" {
 }
 
 variable "resource_based_policies" {
+  description = "List of resource-based policies for lambda function. Used to set permisison for other AWS resource to invoke the function"
   type = list(object({
     statement_id = optional(string, null)
     principal    = string
@@ -19,13 +20,15 @@ variable "resource_based_policies" {
 }
 
 variable "exec_inline_policy" {
-  type    = string
-  default = null
+  type        = string
+  description = "Inline policy for lambda execution role in JSON format"
+  default     = null
 }
 
 variable "exec_managed_policy_arns" {
-  type    = list(string)
-  default = ["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"]
+  type        = list(string)
+  description = "List of managed policy ARNs for lambda execution role"
+  default     = ["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"]
 }
 
 variable "runtime" {
@@ -34,5 +37,6 @@ variable "runtime" {
 }
 
 variable "environment_variables" {
-  type = map(string)
+  type        = map(string)
+  description = "The environment variables that passed to python code"
 }
